@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useMemo } from "react";
+import Swal from "sweetalert2"; // <-- added SweetAlert import
+import { useCart } from "@/app/context/CartContext";
 
 const THICKNESS_OPTIONS = [
   { label: "3mm", key: "3mm" },
@@ -21,6 +23,7 @@ const ProductModal1 = ({ product, onClose }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const [thickness, setThickness] = useState("3mm");
+  const { addToCart, removeFromCart, cartItems } = useCart(); // <-- updated useCart
 
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
@@ -33,13 +36,36 @@ const ProductModal1 = ({ product, onClose }) => {
     return (base * mult).toFixed(2);
   }, [selectedSize, thickness]);
 
-  // Only plain "Portrait Acrylic Wall Photo" is vertical
   const isPortrait =
     product.name.includes("Portrait Acrylic Wall Photo") &&
     !product.name.includes("Rounded Rect Portrait Acrylic Wall Photo");
 
-  // Rounded corners for rectangle-rounded
   const hasRoundedBorders = product.orientation === "rectangle-rounded";
+
+  // <-- NEW FUNCTION: handles add/remove and shows SweetAlert
+  const handleCartClick = () => {
+    const isInCart = cartItems.some((item) => item.id === product.id);
+
+    if (isInCart) {
+      removeFromCart(product.id);
+      Swal.fire({
+        icon: "info",
+        title: "Removed from cart",
+        text: `${product.name} has been removed from your cart.`,
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } else {
+      addToCart(product);
+      Swal.fire({
+        icon: "success",
+        title: "Added to cart",
+        text: `${product.name} has been added to your cart.`,
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    }
+  };
 
   return (
     <div
@@ -192,7 +218,9 @@ const ProductModal1 = ({ product, onClose }) => {
                   }}
                 >
                   {uploadedImage ? (
-                    product.name.includes("Balloon Shape Acrylic Wall Photo") ? (
+                    product.name.includes(
+                      "Balloon Shape Acrylic Wall Photo"
+                    ) ? (
                       <svg
                         width="360"
                         height="360"
@@ -200,10 +228,8 @@ const ProductModal1 = ({ product, onClose }) => {
                         style={{
                           display: "block",
                           margin: "0 auto",
-                          boxShadow:
-                            "0 6px 20px rgba(0,0,0,0.15)",
+                          boxShadow: "0 6px 20px rgba(0,0,0,0.15)",
                           borderRadius: "30px",
-                          // optional: match the reference modal
                         }}
                       >
                         <defs>
@@ -216,7 +242,7 @@ const ProductModal1 = ({ product, onClose }) => {
                           width="360"
                           height="360"
                           style={{
-                            clipPath: "url(#balloon-clip)"
+                            clipPath: "url(#balloon-clip)",
                           }}
                           preserveAspectRatio="xMidYMid slice"
                         />
@@ -229,8 +255,7 @@ const ProductModal1 = ({ product, onClose }) => {
                           height: "320px",
                           borderRadius: "50%",
                           overflow: "hidden",
-                          boxShadow:
-                            "0 6px 20px rgba(0,0,0,0.12)",
+                          boxShadow: "0 6px 20px rgba(0,0,0,0.12)",
                         }}
                       >
                         <img
@@ -268,9 +293,7 @@ const ProductModal1 = ({ product, onClose }) => {
                 <div className="mt-4 border rounded-4 p-4 bg-white shadow-sm">
                   <div className="d-flex justify-content-between align-items-center mb-2">
                     <div>
-                      <h6 className="mb-1 fw-semibold">
-                        {product.name}
-                      </h6>
+                      <h6 className="mb-1 fw-semibold">{product.name}</h6>
                       <p className="small text-muted mb-0">
                         {selectedSize.label} • {thickness}
                       </p>
@@ -287,8 +310,9 @@ const ProductModal1 = ({ product, onClose }) => {
                       opacity: uploadedImage ? 1 : 0.7,
                       cursor: uploadedImage ? "pointer" : "not-allowed",
                     }}
+                    onClick={handleCartClick} // <-- UPDATED HERE
                   >
-                    {uploadedImage ? "Add to Cart" : "Upload Photo First"}
+                    {uploadedImage ? "Add/Remove Cart" : "Upload Photo First"} 
                   </button>
                 </div>
               </div>

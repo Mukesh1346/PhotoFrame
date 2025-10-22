@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { products } from "../data/products";
-import ProductCard from "../components/ProductCard1";
-import ProductModal from "../components/ProductModal1";
+import ProductCard from "./ProductCard1";
+import ProductModal from "./ProductModal1";
+// import ProductCard from "../components/ProductCard1";
+// import ProductModal from "../components/ProductModal1";
 
 const View = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);

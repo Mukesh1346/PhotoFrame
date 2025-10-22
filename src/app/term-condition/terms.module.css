@@ -1,0 +1,51 @@
+.termsBg {
+    background-color: #f8f9fa; /* Light background */
+    padding: 50px 0;
+  }
+  
+  .container h1 {
+    font-weight: 700;
+    color: #14b8a6; /* Primary theme color */
+    margin-bottom: 30px;
+  }
+  
+  .container h2 {
+    font-weight: 600;
+    color: #14b8a6;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .container h3 {
+    font-weight: 500;
+    color: #14b8a6;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  }
+  
+  .container p {
+    color: #495057; /* Dark gray text */
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+  
+  .container a {
+    color: #14b8a6;
+    text-decoration: underline;
+  }
+  
+  .section-divider {
+    height: 3px;
+    width: 80px;
+    background-color: #14b8a6;
+    margin: 20px 0;
+  }
+  
+  .card {
+    border: 1px solid #14b8a6;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+  }
+  
